@@ -1,0 +1,572 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   InstaFetch — Chrome Extension Styles
+   Dark-themed, modern UI overlay for Instagram
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── CSS Variables ──────────────────────────────────────────────────── */
+:root {
+  --if-bg-primary: #1a1a2e;
+  --if-bg-secondary: #16213e;
+  --if-bg-card: #0f3460;
+  --if-bg-hover: #1a3a6e;
+  --if-accent: #e94560;
+  --if-accent-hover: #ff6b81;
+  --if-text-primary: #f1f1f1;
+  --if-text-secondary: #a0a0b8;
+  --if-text-muted: #6c6c80;
+  --if-border: rgba(255, 255, 255, 0.08);
+  --if-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --if-radius: 16px;
+  --if-radius-sm: 10px;
+  --if-transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Floating Action Button ─────────────────────────────────────────── */
+#instafetch-fab {
+  position: fixed;
+  bottom: 108px;
+  right: 32px;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #e94560, #c23152);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow:
+    0 4px 20px rgba(233, 69, 96, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all var(--if-transition);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#instafetch-fab:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow:
+    0 6px 28px rgba(233, 69, 96, 0.55),
+    0 4px 12px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #ff6b81, #e94560);
+}
+
+#instafetch-fab:active {
+  transform: translateY(0) scale(0.98);
+}
+
+#instafetch-fab svg {
+  flex-shrink: 0;
+}
+
+/* ── Single Post Side Button ───────────────────────────────────────── */
+#instafetch-single-post-download {
+  position: fixed;
+  bottom: 108px;
+  right: 32px;
+  z-index: 999999;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #e94560, #c23152);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  box-shadow:
+    0 4px 20px rgba(233, 69, 96, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all var(--if-transition);
+}
+
+#instafetch-single-post-download:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #ff6b81, #e94560);
+}
+
+#instafetch-single-post-download.loading {
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+#instafetch-single-post-download .if-single-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* ── Panel Overlay ──────────────────────────────────────────────────── */
+#instafetch-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: instafetch-fadeIn 0.25s ease-out;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+@keyframes instafetch-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes instafetch-slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Panel Inner ────────────────────────────────────────────────────── */
+.instafetch-panel-inner {
+  width: 460px;
+  max-width: 92vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--if-bg-primary);
+  border: 1px solid var(--if-border);
+  border-radius: var(--if-radius);
+  box-shadow: var(--if-shadow);
+  animation: instafetch-slideUp 0.3s ease-out;
+  color: var(--if-text-primary);
+}
+
+.instafetch-panel-inner::-webkit-scrollbar {
+  width: 6px;
+}
+
+.instafetch-panel-inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.instafetch-panel-inner::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+.instafetch-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--if-border);
+  background: var(--if-bg-secondary);
+  border-radius: var(--if-radius) var(--if-radius) 0 0;
+}
+
+.instafetch-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.instafetch-title svg {
+  color: var(--if-accent);
+}
+
+.instafetch-title h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #e94560, #ff6b81);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.instafetch-close {
+  background: none;
+  border: none;
+  color: var(--if-text-secondary);
+  font-size: 26px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: all var(--if-transition);
+  line-height: 1;
+}
+
+.instafetch-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* ── Profile Section ────────────────────────────────────────────────── */
+.instafetch-profile-section {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--if-border);
+}
+
+.instafetch-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.instafetch-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid var(--if-accent);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.instafetch-profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.instafetch-profile-info strong {
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.instafetch-username {
+  font-size: 13px;
+  color: var(--if-text-secondary);
+}
+
+.instafetch-stats {
+  display: flex;
+  gap: 14px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--if-text-muted);
+}
+
+.instafetch-private-badge {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #ffa726;
+}
+
+.instafetch-warning {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(255, 167, 38, 0.1);
+  border: 1px solid rgba(255, 167, 38, 0.3);
+  border-radius: var(--if-radius-sm);
+  font-size: 13px;
+  color: #ffa726;
+  line-height: 1.5;
+}
+
+.instafetch-error {
+  padding: 14px;
+  background: rgba(233, 69, 96, 0.1);
+  border: 1px solid rgba(233, 69, 96, 0.3);
+  border-radius: var(--if-radius-sm);
+  font-size: 13px;
+  color: var(--if-accent-hover);
+  text-align: center;
+}
+
+/* ── Loading ────────────────────────────────────────────────────────── */
+.instafetch-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  color: var(--if-text-secondary);
+  font-size: 14px;
+}
+
+.instafetch-spinner {
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid rgba(233, 69, 96, 0.2);
+  border-top-color: var(--if-accent);
+  border-radius: 50%;
+  animation: instafetch-spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes instafetch-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Options ────────────────────────────────────────────────────────── */
+.instafetch-options {
+  padding: 14px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.instafetch-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--if-bg-secondary);
+  border: 1px solid var(--if-border);
+  border-radius: var(--if-radius-sm);
+  cursor: pointer;
+  transition: all var(--if-transition);
+  position: relative;
+}
+
+.instafetch-option:hover {
+  background: var(--if-bg-hover);
+  border-color: rgba(233, 69, 96, 0.3);
+}
+
+.instafetch-option input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--if-text-muted);
+  border-radius: 5px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--if-transition);
+  position: relative;
+}
+
+.instafetch-option input[type="checkbox"]:checked {
+  background: var(--if-accent);
+  border-color: var(--if-accent);
+}
+
+.instafetch-option input[type="checkbox"]:checked::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.instafetch-option-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.instafetch-option-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--if-text-primary);
+}
+
+.instafetch-option-desc {
+  display: block;
+  font-size: 11px;
+  color: var(--if-text-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Count Controls ─────────────────────────────────────────────────── */
+.instafetch-count-control {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.instafetch-count-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--if-bg-card);
+  border: 1px solid var(--if-border);
+  border-radius: 6px;
+  color: var(--if-text-primary);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all var(--if-transition);
+  padding: 0;
+  line-height: 1;
+}
+
+.instafetch-count-btn:hover {
+  background: var(--if-accent);
+  border-color: var(--if-accent);
+}
+
+.instafetch-count-input {
+  width: 48px;
+  height: 28px;
+  text-align: center;
+  background: var(--if-bg-card);
+  border: 1px solid var(--if-border);
+  border-radius: 6px;
+  color: var(--if-text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 0 2px;
+  -moz-appearance: textfield;
+}
+
+.instafetch-count-input::-webkit-outer-spin-button,
+.instafetch-count-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.instafetch-count-input:focus {
+  outline: none;
+  border-color: var(--if-accent);
+}
+
+/* ── Progress Bar ───────────────────────────────────────────────────── */
+.instafetch-progress {
+  padding: 14px 22px;
+}
+
+.instafetch-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--if-bg-secondary);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.instafetch-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--if-accent), var(--if-accent-hover));
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.instafetch-progress-text {
+  font-size: 12px;
+  color: var(--if-text-secondary);
+}
+
+/* ── Actions ────────────────────────────────────────────────────────── */
+.instafetch-actions {
+  padding: 14px 22px;
+  display: flex;
+  justify-content: center;
+}
+
+.instafetch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  transition: all var(--if-transition);
+  user-select: none;
+}
+
+.instafetch-btn-primary {
+  background: linear-gradient(135deg, #e94560, #c23152);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(233, 69, 96, 0.35);
+  width: 100%;
+  justify-content: center;
+}
+
+.instafetch-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(233, 69, 96, 0.5);
+  background: linear-gradient(135deg, #ff6b81, #e94560);
+}
+
+.instafetch-btn-primary:active {
+  transform: translateY(0);
+}
+
+.instafetch-btn-primary.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+.instafetch-footer {
+  padding: 12px 22px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--if-text-muted);
+  border-top: 1px solid var(--if-border);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .instafetch-panel-inner {
+    width: 96vw;
+    max-height: 90vh;
+    border-radius: 12px;
+  }
+
+  #instafetch-fab {
+    bottom: 96px;
+    right: 20px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  #instafetch-single-post-download {
+    bottom: 96px;
+    right: 20px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  #instafetch-single-post-download:hover {
+    transform: translateY(0) translateX(-1px);
+  }
+
+  .instafetch-option {
+    flex-wrap: wrap;
+  }
+
+  .instafetch-count-control {
+    margin-left: 32px;
+    margin-top: 6px;
+  }
+}

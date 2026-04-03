@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "InstaFetch",
+  "version": "1.0.0",
+  "description": "Download Instagram profile content as ZIP files - photos, posts, reels, and more.",
+  "permissions": ["activeTab"],
+  "host_permissions": [
+    "https://www.instagram.com/*",
+    "https://*.cdninstagram.com/*",
+    "https://*.fbcdn.net/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.instagram.com/*"],
+      "js": ["libs/jszip.min.js", "content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*"],
+      "matches": ["https://www.instagram.com/*"]
+    }
+  ]
+}
