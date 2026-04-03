@@ -1,5 +1,7 @@
 # InstaFetch
 
+![InstaFetch Preview](preview.png)
+
 InstaFetch is a lightweight Chrome extension that allows you to download Instagram profile pictures and posts (photos and videos) with ease.
 
 ## Features
